@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "42158747147",
+    "firebase_url": "https://howlssns.firebaseio.com",
+    "project_id": "howlssns",
+    "storage_bucket": "howlssns.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42158747147:android:6b514c93368253ed05210e",
+        "android_client_info": {
+          "package_name": "com.e.howlssns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42158747147-65s2evutpq89seaptc8jutm3g47tq17d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.e.howlssns",
+            "certificate_hash": "76062ca90e7e39064e20ee1b2e513a692810d5d5"
+          }
+        },
+        {
+          "client_id": "42158747147-3kgn5f0bg5i5907obc2p0e6djfen9ttm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfc45G0mS5lnD6Z9H9eTO6zLwgojWIdAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42158747147-3kgn5f0bg5i5907obc2p0e6djfen9ttm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
