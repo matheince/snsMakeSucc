@@ -1,0 +1,2 @@
+다음의 코드로 findViewByID()함수가 생략되어짐
+import kotlinx.android.synthetic.main.activity_login.*
