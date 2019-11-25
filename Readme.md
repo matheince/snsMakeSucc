@@ -1,12 +1,25 @@
-2019년 11월 25일 작업내용
- android:inputType="textPassword" 입력값이 ***** 처리됨
- 파이버베이스에 사용설정및 LoginActivity 에 다음 함수및 activity_login.xml 에 아이디 지정만으로 생성됨
- fun createAndLoginEmail(){
-         auth?.createUserWithEmailAndPassword(email_EditText.text.toString(),password_EditText.text.toString())?.addOnCompleteListener {
-             task ->
-             if(task.isSuccessful){
-                 Toast.makeText(this,"아이디 생성 성공",Toast.LENGTH_LONG).show()
-             }
-         }
+2019년 11월 25-1일 작업내용
+ implementation 'com.google.android.gms:play-services-auth:17.0.0' 을 통한 Google 인증 시스템에 라이브러리 등록
 
-     }
+ LoginActivity.kt 안에 onCreate() 함수내에 다음 코드를 넣어줌
+    var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+ 정말 어처구니 없게 var accout 선언후 firebaseAuthWithGoogle(account!!) 써야 하는데
+               override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+                    super.onActivityResult(requestCode, resultCode, data)
+                    if(requestCode==GOOGLE_LOGIN_CODE) {
+                        var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+                        if(result.isSuccess){
+                            var account = result.signInAccount
+                            //firebaseAuthWithGoogle(account!! )
+                            firebaseAuthWithGoogle(account!!)
+
+                        }
+                    }
+                }
+            }
+
+결국 다음과 같이 성공함.
