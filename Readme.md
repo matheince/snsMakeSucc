@@ -1,25 +1,42 @@
-2019년 11월 25-1일 작업내용
- implementation 'com.google.android.gms:play-services-auth:17.0.0' 을 통한 Google 인증 시스템에 라이브러리 등록
+2019년 11월 25-2일 작업내용
 
- LoginActivity.kt 안에 onCreate() 함수내에 다음 코드를 넣어줌
-    var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
+ facebook ID 연동
 
- 정말 어처구니 없게 var accout 선언후 firebaseAuthWithGoogle(account!!) 써야 하는데
-               override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-                    super.onActivityResult(requestCode, resultCode, data)
-                    if(requestCode==GOOGLE_LOGIN_CODE) {
-                        var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-                        if(result.isSuccess){
-                            var account = result.signInAccount
-                            //firebaseAuthWithGoogle(account!! )
-                            firebaseAuthWithGoogle(account!!)
+ facebook for developers 사이트 이동해서
+ 앱만들기 ID 생성후 facebook 로그인 설정으로 이동 다음 안드로이드 os 선택후
+ 첫번째 build.gradle 파일 열어서
+   buildscript {
+       ext.kotlin_version = '1.3.60'
+       repositories {
+           google()
+           jcenter()
+      ==>     mavenCentral() 입력후
 
-                        }
-                    }
+  두번째 gradle 파일 열어서 dependencies 에 다음 문장을 추가ㅓ
+     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+  
+  Hash key 생성
+    -구글에서 How to create facebook Hash key 입력하면 stackoverflow.com 사이트로 이동하고 다음 코드를 복사 LoginActivity.kt 에 onCreat() 함수 다음에 넣어 줌
+    
+    printHashKey(this)  // 이함수는  googleSignInClient = GoogleSignIn.getClient(this,gso) 다음 줄에 입력 
+    
+    public static void printHashKey(Context pContext) {
+            try {
+                PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES);
+                for (Signature signature : info.signatures) {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    String hashKey = new String(Base64.encode(md.digest(), 0));
+                    Log.i("Howls", "printHashKey() Hash Key: " + hashKey);
                 }
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("Howls", "printHashKey()", e);
+            } catch (Exception e) {
+                Log.e(TAG, "printHashKey()", e);   // TAG -> "Howls" 로 바꿔 줌
             }
-
-결국 다음과 같이 성공함.
+        }
+        
+        위의 코드를 입력하면 kortlin으로 변환 물어보면 yes 빨간 줄 나오면 import해줌
+        
+        위의 코드 입력후 실행하면 logcat 으로 이동 value 에 Howls 입력하면 다음과 같은 Hash key 값을 얻을 수 있고 facebook site 4번째 항목인 Hash 값에 넣어 줌
+        dgYsqQ5+OQZOIO4bLlE6aSgQ1dU=
