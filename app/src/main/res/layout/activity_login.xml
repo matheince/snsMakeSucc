@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
     <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
         android:src="@drawable/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,6 +81,7 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             ></Button>
+
         <Button
             android:textColor="@color/colorWhite"
             android:background="@drawable/btn_signin_twitter"
@@ -100,6 +103,7 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             ></Button>
+>>>>>>> f163b3343c88d1de8fe719bdc0fdf87266f2004b
 
     </LinearLayout>
 
