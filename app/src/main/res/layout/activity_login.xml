@@ -29,6 +29,7 @@
             android:layout_marginRight="20dp"
             >
             <EditText
+                android:id="@+id/email_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/email">
@@ -44,6 +45,9 @@
 
             >
             <EditText
+                android:inputType="textPassword"
+
+                android:id="@+id/password_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/password">
@@ -51,7 +55,10 @@
             </EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <Button
+            android:id="@+id/email_login_button"
+
             android:text="@string/signin_email"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -62,6 +69,7 @@
             android:layout_marginRight="25dp"
             ></Button>
         <Button
+            android:id="@+id/google_sign_In_button"
             android:textColor="@color/colorWhite"
             android:background="@drawable/btn_signin_google"
             android:text="@string/signin_google"
@@ -74,6 +82,28 @@
             android:layout_marginRight="25dp"
             ></Button>
 
+        <Button
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_signin_twitter"
+            android:text="@string/signin_twitter"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            ></Button>
+        <Button
+            android:id="@+id/facebook_login_button"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_signin_facebook"
+            android:text="@string/signin_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="35dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            ></Button>
+>>>>>>> f163b3343c88d1de8fe719bdc0fdf87266f2004b
 
     </LinearLayout>
 
