@@ -146,10 +146,10 @@ class LoginActivity : AppCompatActivity() {
 
             })
     }
-fun handleFacebookAccessToken(token : AccessToken?){
-    var credential = FacebookAuthProvider.getCredential(token?.token!!)
-    auth?.signInWithCredential(credential)
-}
+    fun handleFacebookAccessToken(token : AccessToken?){
+        var credential = FacebookAuthProvider.getCredential(token?.token!!)
+        auth?.signInWithCredential(credential)
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -159,7 +159,6 @@ fun handleFacebookAccessToken(token : AccessToken?){
             var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if(result.isSuccess){
                 var account = result.signInAccount
-                //firebaseAuthWithGoogle(account!! )
                 firebaseAuthWithGoogle(account!!)
 
             }
