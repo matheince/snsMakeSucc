@@ -1,171 +1,83 @@
-2019년 11월 28-1일 작업내용
+2019년 11월 28-2일 작업내용
 
-  1.activity_add_photo.xml 에 다음과 같은 코드를 입력
-       <androidx.appcompat.widget.Toolbar
-              android:layout_width="match_parent"
-              android:layout_height="55dp"
-              android:id="@+id/my_Toolbar">
-      
-              <ImageView
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:src="@drawable/logo">
-      
-              </ImageView>
-      
-          </androidx.appcompat.widget.Toolbar>
-      
-          <LinearLayout
-              android:orientation="vertical"
-              android:id="@+id/toolbar_division"
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_below="@+id/my_Toolbar"
-              android:background="@color/colorDivision">
-      
-          </LinearLayout>
-      
-          <ImageView
-              android:layout_margin="8dp"
-              android:layout_below="@+id/toolbar_division"
-              android:layout_width="100dp"
-              android:layout_height="100dp"
-              android:id="@+id/addPhoto_Image">
-      
-          </ImageView>
-      
-          <com.google.android.material.textfield.TextInputLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_below="@+id/toolbar_division"
-              android:layout_toRightOf="@+id/addPhoto_Image"
-              android:id="@+id/editText">
-      
-              <EditText
-                  android:layout_width="100dp"
-                  android:layout_height="100dp"
-                  android:id="@+id/addPhotoEdit_explain"
-                  android:hint="@string/hint_image_content"
-                  android:gravity="top">
-              </EditText>
-          </com.google.android.material.textfield.TextInputLayout>
-      
-      
-          <Button
-              android:text ="@string/upload_image"
-              android:layout_below="@+id/editText"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/addphoto_btn_upload"
-              android:layout_margin="8dp"
-              android:layout_toRightOf="@+id/addPhoto_Image"
-              android:theme="@style/ButtonStyle"></Button>
-     *** Layout 은 Relative_Layout 으로 변경
-     
-  2. Add_photo_Activity 추가
-      먼저 사진을 불러올수 있는 권한을 MainActivity 에 넣어줌
-      override fun onCreate(savedInstanceState: Bundle?) {
-              super.onCreate(savedInstanceState)
-              setContentView(R.layout.activity_main)
-      ===>    ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
-      그리고 Manifest 파일에 6번째 줄에
-         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-      넣어줌
-             
-  3 사진올리기
-     Add_Photo_Activity 에 다음 코드를 넣어주고
-     class Add_Photo_Activity : AppCompatActivity() {
-         val PICK_IMAGE_FROM_ALBUM = 0
-         override fun onCreate(savedInstanceState: Bundle?) {
-             super.onCreate(savedInstanceState)
-             setContentView(R.layout.activity_add__photo_)
-             var photoPickerIntent = Intent(Intent.ACTION_PICK)
-             photoPickerIntent.type ="image/*"
-             startActivityForResult(photoPickerIntent,PICK_IMAGE_FROM_ALBUM)
-     
-         }
-     }
-     입력후 MainActivity 에 이벤트를 넣어줌
-     R.id.action_add_photo -> {
-                 -->    if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
-                 -->        startActivity(Intent(this,Add_Photo_Activity::class.java))
-                     
-                     return true
-                 }
-  4 담기는 사진을 관리
-     Add_Photo_Activity.kt 이동
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-             super.onActivityResult(requestCode, resultCode, data)
-             if (requestCode==PICK_IMAGE_FROM_ALBUM){
-                 addPhoto_Image.setImageURI(data?.data)
-                 if(resultCode==Activity.RESULT_OK){
-                     addPhoto_Image.setImageURI(data?.data)  //사진 선택시 다른 사진 선택
-     
-                 }
-                 else{
-                   finish()  // 뒤로가기 버튼 클릭시 activity_add_photo.xml 을 닫아줌
-                 }
-             }    
-         }
-         
-     - 코드입력후 
-     override fun onCreate(savedInstanceState: Bundle?) {
-             super.onCreate(savedInstanceState)
-             setContentView(R.layout.activity_add__photo_)
-             var photoPickerIntent = Intent(Intent.ACTION_PICK)
-             photoPickerIntent.type ="image/*"
-             startActivityForResult(photoPickerIntent,PICK_IMAGE_FROM_ALBUM)
-       --->  addPhoto_Image.setOnClickListener {
-       --->      var photoPickerIntent = Intent(Intent.ACTION_PICK)
-       --->      photoPickerIntent.type ="image/*"
-       --->      startActivityForResult(photoPickerIntent,PICK_IMAGE_FROM_ALBUM)
-       --->  }
-       입력한다.
-  5 firebase에 사진 업로드하기
-     - 파이어베이스의 Storage 선택후 보안==> 완료후  (인증된 사람만이 업로드하기 위한 코드 자동작성후)
-        Add_Photo_Activity.kt에 다음 코드 작성후 Android Studio 메뉴바 -> Tools 중에 firebase 실행후 Assistant 중
-        Storage 선택 1단계(connect) 2단계(Add Cloud Storage to your app)선택 진행
-          -build.gradel(Module:app) 에 dependencis 작업
-                   implementation 'com.google.firebase:firebase-auth:16.0.5'
-                   implementation 'com.google.firebase:firebase-storage:16.0.5'
-                   버전을 같게 맞춤 
-     
-     Add_Photo_Activity.kt 이동              
-        class Add_Photo_Activity : AddCompaActivity(){ 안에 
-           var storage :FirebaseStorage? = null  <--변수 선언해 주고
-        onCreate()함수내에
-           storage = FirebaseStorage.getInstance() <<-- 넣어줌   
-     
-         
-     전역변수 : photoURI 선언 // phto data가 저장될 변수
-        var photoURI :Uri? = null
-         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-                super.onActivityResult(requestCode, resultCode, data)
-                if (requestCode==PICK_IMAGE_FROM_ALBUM){
-                    addPhoto_Image.setImageURI(data?.data)
-                    if(resultCode==Activity.RESULT_OK){
-                        
-                 --->>  photoURI = data?.data
-                        addPhoto_Image.setImageURI(data?.data)
-                        
-           위의 photoURI를 contentUpload() 함수에서 사용
-           
-     fun contentUpload(){
-                  val timeStamp = SimpleDateFormat("yyyymmdd_HHMMSS").format(Date())
-                  val ImageFileName = "JPEG_"+timeStamp+"_png"
-                  val storageRef = storage?.reference?.child("images")?.child(ImageFileName)
-                  
-                  //photoURI에 빨간중이 가면 !! 를 넣어줌
-                  storageRef?.putFile(photoURI!!)?.addOnSuccessListener {
-                              Toast.makeText(this,getString(R.string.upload_success),Toast.LENGTH_LONG).show()
+  1.DDO 제작
+    Package 만들기
+      루트에 "Model" 패키지 만들기
+      그안에 New 메뉴로 kotlin FileClass 만들기
+      ContentDTO 안에
+          package com.e.howlssns.model
+          
+          import java.sql.Timestamp
+          import java.util.HashMap
+          
+          data class ContentDTO(
+                      var explain:String? = null,
+                      var imageUrl : String? = null,
+                      var uid : String? = null,
+                      var userId : String? =null,
+                      var timestamp: Long?=null,
+                      var favoriteCount : Int = 0,
+                      var favorites : Map<String,Boolean> = HashMap()
+                      ) {
+              data class Comment(
+                  var uid: String? = null,
+                  var userID: String? = null,
+                  var comment: String? = null,
+                  var timestamp: Long? = null
+              )
+          } 
+      위의 코드입력
+   2 데이터베이스에 사진정보를 입력
+     Add_Photo_Activity 로 이동
+        storageRef 안에 다음 코드 추가
+           storageRef?.putFile(photoURI!!)?.addOnSuccessListener { taskSnapshot ->
+                       Toast.makeText(this,getString(R.string.upload_success),Toast.LENGTH_LONG).show()
+                       var url = taskSnapshot.downloadUrl 
+           위코드 넣을 때 주의사항 ==>> addOnSuccessListener 리스너 넣을 때 ctrl+Space 바로 'taskSnapshot ->' 넣고,
+                        var url = taskSnapshot.downloadUrl 의 downloadUrl 이 빨간색 나올 때 alt+Enter 키로 import 해야 됨
                           
-              }  
+   3 Firebase에 저장 Add_Photo_Activity.kt 에 다음 코드 작성및 Firebase의 Firestore 지정
+   
+     var uri = taskSnapshot.downloadUrl
+                 var contentDTO = ContentDTO()
+                 //val db = FirebaseFirestore.getInstance()
+                 //이미지 주소
+                 contentDTO.imageUrl = uri!!.toString()
+                 // 유저의 UID
+                 contentDTO.uid = auth?.currentUser?.uid
+                 // 게시물 설명
+                 contentDTO.explain = addPhotoEdit_explain.text.toString()
+                 // 유저 ID
+                 contentDTO.userId = auth?.currentUser?.email
+                 // 게시물 업로드 시간
+                 contentDTO.timestamp = System.currentTimeMillis()
+                 // 저장시 firestore 설정 요망
+                 // firebase 창 띄워 Firestore 지정 --> 자동 저장됨
+                // val db = FirebaseFirestore.getInstance()
+                // 다음 문장을 쓰기위해 onCreate() 위에  변수 지정
+                // var firestore : FirebaseFirestore? = null 지정
+                 firestore?.collection("images")?.document()?.set(contentDTO)
+                 
      
-     - "사진올리기" 버튼에 event 추가 onCreate()함수에 다음 코드추가
-            addphoto_btn_upload.setOnClickListener { 
-                    contentUpload()
+                 setResult(Activity.RESULT_OK)
+                 finish()
+      
+     ** class Add_Photo_Activity : AppCompatActivity() 안에 다음 두줄 선언함.
+        var auth : FirebaseAuth? =null
+        var firestore : FirebaseFirestore? = null
+      
+      그 다음으로 Firebase 권한을 지정해야 함.
+      Firebase 의 홈페이지에서 database로 이동
+      database 만들기로 이동 --> 규칙 탭 이동 
+          service cloud.firestore {
+            match /databases/{database}/documents {
+              match /{document=**} {
+   -->편집     allow read, write: if request.auth.uid != null;
+              }
             }
-        
-                
+          }
+          
+       '게시'버튼으로 게시함.
+                 
      *** www.pixabay.com 에 무료 사진이 많음
      
