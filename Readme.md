@@ -1,206 +1,171 @@
-<<<<<<< HEAD
-2019년 11월 27-1일 작업내용
+2019년 11월 28-1일 작업내용
 
-  '회원가입 및 로그인' 버튼은 정상이나 구글,페이스북 로그인은 정상상태가 아님. 
-=======
-2019년 11월 27-2일 작업내용
-
-  1. res dir에 menu dir 생성 후 
-     <?xml version="1.0" encoding="utf-8"?>
-     <menu xmlns:android="http://schemas.android.com/apk/res/android">
-         <item
-             android:id="@+id/action_home"
-             android:enabled="true"
-             android:icon="@drawable/ic_home"
-             android:title="@string/home">
-         </item>
+  1.activity_add_photo.xml 에 다음과 같은 코드를 입력
+       <androidx.appcompat.widget.Toolbar
+              android:layout_width="match_parent"
+              android:layout_height="55dp"
+              android:id="@+id/my_Toolbar">
+      
+              <ImageView
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:src="@drawable/logo">
+      
+              </ImageView>
+      
+          </androidx.appcompat.widget.Toolbar>
+      
+          <LinearLayout
+              android:orientation="vertical"
+              android:id="@+id/toolbar_division"
+              android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:layout_below="@+id/my_Toolbar"
+              android:background="@color/colorDivision">
+      
+          </LinearLayout>
+      
+          <ImageView
+              android:layout_margin="8dp"
+              android:layout_below="@+id/toolbar_division"
+              android:layout_width="100dp"
+              android:layout_height="100dp"
+              android:id="@+id/addPhoto_Image">
+      
+          </ImageView>
+      
+          <com.google.android.material.textfield.TextInputLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/toolbar_division"
+              android:layout_toRightOf="@+id/addPhoto_Image"
+              android:id="@+id/editText">
+      
+              <EditText
+                  android:layout_width="100dp"
+                  android:layout_height="100dp"
+                  android:id="@+id/addPhotoEdit_explain"
+                  android:hint="@string/hint_image_content"
+                  android:gravity="top">
+              </EditText>
+          </com.google.android.material.textfield.TextInputLayout>
+      
+      
+          <Button
+              android:text ="@string/upload_image"
+              android:layout_below="@+id/editText"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/addphoto_btn_upload"
+              android:layout_margin="8dp"
+              android:layout_toRightOf="@+id/addPhoto_Image"
+              android:theme="@style/ButtonStyle"></Button>
+     *** Layout 은 Relative_Layout 으로 변경
      
-     
-         <item
-             android:id="@+id/action_search"
-             android:enabled="true"
-             android:icon="@drawable/ic_search"
-             android:title="@string/search">
-         </item>
-         <item
-             android:id="@+id/action_add_photo"
-             android:enabled="true"
-             android:icon="@drawable/ic_add_a_photo"
-             android:title="@string/gallery">
-         </item>
-         <item
-             android:id="@+id/action_favorite_alarm"
-             android:enabled="true"
-             android:icon="@drawable/ic_favorite_border"
-             android:title="@string/favorite">
-         </item>
-         <item
-             android:id="@+id/action_account"
-             android:enabled="true"
-             android:icon="@drawable/ic_account"
-             android:title="@string/account">
-         </item>
-     </menu>
-     
-     코딩합니다.
-     
-  2. 그후 MainActivity.kt 이동 Implement Members 로 BottomNavigationView.OnNavigationItemSelectedListener 작성함
-     class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-         override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-         }
-  3. activity_main.xml 에 다음과 같은 코드 생성후    
-     <com.google.android.material.bottomnavigation.BottomNavigationView
-             android:id="@+id/bottom_navigation"            
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_alignParentBottom="true"
-             app:menu="@menu/bottom_navigation_main">
-     
-     </com.google.android.material.bottomnavigation.BottomNavigationView>
-     
- 4. MainActivity.kt 이동후
-    override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_main)
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
-       -->  bottom_navigation 입력하면 
-            import kotlinx.android.synthetic.main.activity_main.* 이 생긴다.
-            bottom_navigation.setOnNavigationItemSelectedListener(this) 여기서 this 의미하는 것은 43번째 줄의    
-               class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener 것을 가리키고 곧 44,45번째
-               줄을 실행함.
-               
- 5  
- class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-         when(p0.itemId){
-             R.id.action_home -> {
-                 println("1")
-                 return true
-             }
-             R.id.action_search -> {
-                 println("2")
-                 return true
-             }
-             R.id.action_add_photo -> {
-                 println("3")
-                 return true
-             }
-             R.id.action_favorite_alarm -> {
-                 println("4")
-                 return true
-             }
-             R.id.action_account -> {
-                 println("5")
-                 return true
-             }
- 
-         }
-         return false
- 
-     }
-     실행창에 1,2,3,4,5 가 정상적으로 찍힘
-     
-     
- 6 자동 로그인 LoginActivity.kt 에 다음 함수 넣는다
-    override fun onResume() {
-            super.onResume()
-            moveMainPage(auth?.currentUser)
-        }
-     
- 7 Fragment 넣기
-   Activity 작성하듯
-      New -> Kotlin Files -> AlertFragment 작성
-                             DetailviewFragment 작성
-                             GridFragment 작성
-                             UserFragment 작성
-      Layout 에서 위 Fragment 에 쓸 xml 작성 (res -> layout -> resource file)
-                             fragment_alarm.xml
-                             fragment_detail.xml
-                             fragment_grid.xml
-                             fragment_user.xml
-                             
-                             
- 8 각 Fragment에 다음 코드를 넣는다 (참고 : Android Studio 3.5.2는 app 수준의 fragment 는 제공하지 않음)
-     
-     class DetailviewFragment :Fragment(){
-         override fun onCreateView(
-             inflater: LayoutInflater,
-             container: ViewGroup?,
-             savedInstanceState: Bundle?
-         ): View? {
-             return LayoutInflater.from(inflater.context).inflate(R.layout.fragment_detail,container,false)
-     
-         }
-     
-     }   
-     
-     class AlertFragment :Fragment(){
-         override fun onCreateView(
-             inflater: LayoutInflater,
-             container: ViewGroup?,
-             savedInstanceState: Bundle?
-         ): View? {
-             return LayoutInflater.from(inflater.context).inflate(R.layout.fragment_alarm,container,false)
-         }
-     }
-                   
-                                               
-     class GridFragment :Fragment(){
-         override fun onCreateView(
-             inflater: LayoutInflater,
-             container: ViewGroup?,
-             savedInstanceState: Bundle?
-         ): View? {
-             return LayoutInflater.from(inflater.context).inflate(R.layout.fragment_grid,container,false)
-     
-         }
-     
-     }    
-     
-     class UserFragment :Fragment(){
-         override fun onCreateView(
-             inflater: LayoutInflater,
-             container: ViewGroup?,
-             savedInstanceState: Bundle?
-         ): View? {
-             return LayoutInflater.from(inflater.context).inflate(R.layout.fragment_user,container,false)
+  2. Add_photo_Activity 추가
+      먼저 사진을 불러올수 있는 권한을 MainActivity 에 넣어줌
+      override fun onCreate(savedInstanceState: Bundle?) {
+              super.onCreate(savedInstanceState)
+              setContentView(R.layout.activity_main)
+      ===>    ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
+      그리고 Manifest 파일에 6번째 줄에
+         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+      넣어줌
+             
+  3 사진올리기
+     Add_Photo_Activity 에 다음 코드를 넣어주고
+     class Add_Photo_Activity : AppCompatActivity() {
+         val PICK_IMAGE_FROM_ALBUM = 0
+         override fun onCreate(savedInstanceState: Bundle?) {
+             super.onCreate(savedInstanceState)
+             setContentView(R.layout.activity_add__photo_)
+             var photoPickerIntent = Intent(Intent.ACTION_PICK)
+             photoPickerIntent.type ="image/*"
+             startActivityForResult(photoPickerIntent,PICK_IMAGE_FROM_ALBUM)
      
          }
      }
-
-    위 코드를 모두 작성후 MainActivity 에 
-    when(p0.itemId){
-                R.id.action_home -> {
-      각 리소스는     var detailviewFragment = DetailviewFragment() 을 추가
-                    return true
-                }
-                ....
-                            
-9 transaction 처리를 위해 각 리소스에 var detailviewFragment = DetailviewFragment() 다음에 다음 코드 작성
-    supportFragmentManager.beginTransaction().replace(R.id.main_content,detailviewFragment).commit() 여기 commit()굉장히 중요함.
-    넣고 activity_main.xml 에 화면을 넣어줄 layout 작성 toolbar 문 뒤에
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_content">
-        </FrameLayout>
-    
-10 화면이 전환되었는지 확인 위해 각 fragment.xml 파일에 다음 코드 작성
-   android:background="@color/colorPrimary" 색을 바꿔가며 넣어줌
-    
-   
-***** 실행이 안되었당 정말 챙피하게도 activity_main.xml 의 FrameLayout 에 
-<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_parent"  <- 이렇게 되서 
-        android:id="@+id/main_content">
-
-    </FrameLayout>   
-    android:layout_height="match_parent" 로 바꿔주고 정상적으로 작동됨
-    
+     입력후 MainActivity 에 이벤트를 넣어줌
+     R.id.action_add_photo -> {
+                 -->    if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
+                 -->        startActivity(Intent(this,Add_Photo_Activity::class.java))
+                     
+                     return true
+                 }
+  4 담기는 사진을 관리
+     Add_Photo_Activity.kt 이동
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+             super.onActivityResult(requestCode, resultCode, data)
+             if (requestCode==PICK_IMAGE_FROM_ALBUM){
+                 addPhoto_Image.setImageURI(data?.data)
+                 if(resultCode==Activity.RESULT_OK){
+                     addPhoto_Image.setImageURI(data?.data)  //사진 선택시 다른 사진 선택
+     
+                 }
+                 else{
+                   finish()  // 뒤로가기 버튼 클릭시 activity_add_photo.xml 을 닫아줌
+                 }
+             }    
+         }
          
- ** google login Error
-    --> D/FirebaseApp: Notified 0 auth state listeners. 로그창 메세지
-    
->>>>>>> 3e4feb38f67eae4951df342e52c6eb708c299f4a
+     - 코드입력후 
+     override fun onCreate(savedInstanceState: Bundle?) {
+             super.onCreate(savedInstanceState)
+             setContentView(R.layout.activity_add__photo_)
+             var photoPickerIntent = Intent(Intent.ACTION_PICK)
+             photoPickerIntent.type ="image/*"
+             startActivityForResult(photoPickerIntent,PICK_IMAGE_FROM_ALBUM)
+       --->  addPhoto_Image.setOnClickListener {
+       --->      var photoPickerIntent = Intent(Intent.ACTION_PICK)
+       --->      photoPickerIntent.type ="image/*"
+       --->      startActivityForResult(photoPickerIntent,PICK_IMAGE_FROM_ALBUM)
+       --->  }
+       입력한다.
+  5 firebase에 사진 업로드하기
+     - 파이어베이스의 Storage 선택후 보안==> 완료후  (인증된 사람만이 업로드하기 위한 코드 자동작성후)
+        Add_Photo_Activity.kt에 다음 코드 작성후 Android Studio 메뉴바 -> Tools 중에 firebase 실행후 Assistant 중
+        Storage 선택 1단계(connect) 2단계(Add Cloud Storage to your app)선택 진행
+          -build.gradel(Module:app) 에 dependencis 작업
+                   implementation 'com.google.firebase:firebase-auth:16.0.5'
+                   implementation 'com.google.firebase:firebase-storage:16.0.5'
+                   버전을 같게 맞춤 
+     
+     Add_Photo_Activity.kt 이동              
+        class Add_Photo_Activity : AddCompaActivity(){ 안에 
+           var storage :FirebaseStorage? = null  <--변수 선언해 주고
+        onCreate()함수내에
+           storage = FirebaseStorage.getInstance() <<-- 넣어줌   
+     
+         
+     전역변수 : photoURI 선언 // phto data가 저장될 변수
+        var photoURI :Uri? = null
+         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+                super.onActivityResult(requestCode, resultCode, data)
+                if (requestCode==PICK_IMAGE_FROM_ALBUM){
+                    addPhoto_Image.setImageURI(data?.data)
+                    if(resultCode==Activity.RESULT_OK){
+                        
+                 --->>  photoURI = data?.data
+                        addPhoto_Image.setImageURI(data?.data)
+                        
+           위의 photoURI를 contentUpload() 함수에서 사용
+           
+     fun contentUpload(){
+                  val timeStamp = SimpleDateFormat("yyyymmdd_HHMMSS").format(Date())
+                  val ImageFileName = "JPEG_"+timeStamp+"_png"
+                  val storageRef = storage?.reference?.child("images")?.child(ImageFileName)
+                  
+                  //photoURI에 빨간중이 가면 !! 를 넣어줌
+                  storageRef?.putFile(photoURI!!)?.addOnSuccessListener {
+                              Toast.makeText(this,getString(R.string.upload_success),Toast.LENGTH_LONG).show()
+                          
+              }  
+     
+     - "사진올리기" 버튼에 event 추가 onCreate()함수에 다음 코드추가
+            addphoto_btn_upload.setOnClickListener { 
+                    contentUpload()
+            }
+        
+                
+     *** www.pixabay.com 에 무료 사진이 많음
+     

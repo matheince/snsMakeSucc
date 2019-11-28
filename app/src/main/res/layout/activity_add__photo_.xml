@@ -8,7 +8,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="55dp"
         android:id="@+id/my_Toolbar">
 
         <ImageView
@@ -21,6 +21,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/toolbar_division"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -42,27 +43,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_division"
-        android:layout_toRightOf="@+id/addPhoto_Image">
+        android:layout_toRightOf="@+id/addPhoto_Image"
+        android:id="@+id/editText">
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/addPhotoEdit_explain"
             android:hint="@string/hint_image_content"
             android:gravity="top">
         </EditText>
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.button.MaterialButton
+
+
+    <Button
+        android:text ="@string/upload_image"
+        android:layout_below="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/addphoto_btn_upload"
         android:layout_margin="8dp"
         android:layout_toRightOf="@+id/addPhoto_Image"
         android:theme="@style/ButtonStyle"
-        android:text="@string/upload_image">
-
-    </com.google.android.material.button.MaterialButton>
-
+        ></Button>
 
 
 </RelativeLayout>
