@@ -79,5 +79,27 @@
           
        '게시'버튼으로 게시함.
                  
+    build Error 가 나타남.
+        Error Cod: can fit ~~~   ===>build.gradle 파일에  multiDexEnabled true 추가
+             defaultConfig {
+                    applicationId "com.e.howlssns"
+                    minSdkVersion 15
+                    targetSdkVersion 29
+                    
+    -- 전역변수 초기화의 중요성
+         //초기화  =================================
+                firestore = FirebaseFirestore.getInstance()
+        
+                storage = FirebaseStorage.getInstance()
+        
+                auth = FirebaseAuth.getInstance()
+        
+                //=========================================
+                
+                
+     결과값:
+          Firebase의 database메뉴에 올라감
+          
+                         
      *** www.pixabay.com 에 무료 사진이 많음
      

@@ -17,7 +17,8 @@ import java.util.*
 
 
 private val UploadTask.TaskSnapshot.downloadUrl: Any
-    get() {}
+    get() {return true}
+
 
 class Add_Photo_Activity : AppCompatActivity() {
     val PICK_IMAGE_FROM_ALBUM = 0
@@ -32,9 +33,14 @@ class Add_Photo_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add__photo_)
 
+        //초기화  =================================
+        firestore = FirebaseFirestore.getInstance()
+
         storage = FirebaseStorage.getInstance()
-    // auth 사용
+
         auth = FirebaseAuth.getInstance()
+
+        //=========================================
 
         var photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type ="image/*"
