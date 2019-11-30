@@ -1,105 +1,117 @@
-2019년 11월 28-2일 작업내용
+2019년 11월 29-1일 작업내용
 
-  1.DDO 제작
-    Package 만들기
-      루트에 "Model" 패키지 만들기
-      그안에 New 메뉴로 kotlin FileClass 만들기
-      ContentDTO 안에
-          package com.e.howlssns.model
-          
-          import java.sql.Timestamp
-          import java.util.HashMap
-          
-          data class ContentDTO(
-                      var explain:String? = null,
-                      var imageUrl : String? = null,
-                      var uid : String? = null,
-                      var userId : String? =null,
-                      var timestamp: Long?=null,
-                      var favoriteCount : Int = 0,
-                      var favorites : Map<String,Boolean> = HashMap()
-                      ) {
-              data class Comment(
-                  var uid: String? = null,
-                  var userID: String? = null,
-                  var comment: String? = null,
-                  var timestamp: Long? = null
-              )
-          } 
-      위의 코드입력
-   2 데이터베이스에 사진정보를 입력
-     Add_Photo_Activity 로 이동
-        storageRef 안에 다음 코드 추가
-           storageRef?.putFile(photoURI!!)?.addOnSuccessListener { taskSnapshot ->
-                       Toast.makeText(this,getString(R.string.upload_success),Toast.LENGTH_LONG).show()
-                       var url = taskSnapshot.downloadUrl 
-           위코드 넣을 때 주의사항 ==>> addOnSuccessListener 리스너 넣을 때 ctrl+Space 바로 'taskSnapshot ->' 넣고,
-                        var url = taskSnapshot.downloadUrl 의 downloadUrl 이 빨간색 나올 때 alt+Enter 키로 import 해야 됨
-                          
-   3 Firebase에 저장 Add_Photo_Activity.kt 에 다음 코드 작성및 Firebase의 Firestore 지정
-   
-     var uri = taskSnapshot.downloadUrl
-                 var contentDTO = ContentDTO()
-                 //val db = FirebaseFirestore.getInstance()
-                 //이미지 주소
-                 contentDTO.imageUrl = uri!!.toString()
-                 // 유저의 UID
-                 contentDTO.uid = auth?.currentUser?.uid
-                 // 게시물 설명
-                 contentDTO.explain = addPhotoEdit_explain.text.toString()
-                 // 유저 ID
-                 contentDTO.userId = auth?.currentUser?.email
-                 // 게시물 업로드 시간
-                 contentDTO.timestamp = System.currentTimeMillis()
-                 // 저장시 firestore 설정 요망
-                 // firebase 창 띄워 Firestore 지정 --> 자동 저장됨
-                // val db = FirebaseFirestore.getInstance()
-                // 다음 문장을 쓰기위해 onCreate() 위에  변수 지정
-                // var firestore : FirebaseFirestore? = null 지정
-                 firestore?.collection("images")?.document()?.set(contentDTO)
-                 
+  1.res > layout > New 해서 item_detail.xml을 만들고 Layout 작업
+  
+  2. DetailviewFragment.kt 의 fragment_detail.xml 에 RecycleView를 갖게 작업
      
-                 setResult(Activity.RESULT_OK)
-                 finish()
-      
-     ** class Add_Photo_Activity : AppCompatActivity() 안에 다음 두줄 선언함.
-        var auth : FirebaseAuth? =null
-        var firestore : FirebaseFirestore? = null
-      
-      그 다음으로 Firebase 권한을 지정해야 함.
-      Firebase 의 홈페이지에서 database로 이동
-      database 만들기로 이동 --> 규칙 탭 이동 
-          service cloud.firestore {
-            match /databases/{database}/documents {
-              match /{document=**} {
-   -->편집     allow read, write: if request.auth.uid != null;
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical" android:layout_width="match_parent"
+         android:layout_height="match_parent">
+     
+         <view class="androidx.appcompat.app.AlertController$RecycleListView"
+             android:id="@+id/detailviewfragment_recyleview"
+     
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+     
+         </view>
+     
+     </LinearLayout>
+     다음  detailviewfragment_recyleview을 DetailviewFragment.kt 에서 쓰도록 함
+            ): View? {
+                  var view = LayoutInflater.from(inflater.context).inflate(R.layout.fragment_detail,container,false)
+                  view.detailviewfragment_recyleview
+                  return view
+          
               }
-            }
-          }
+              inner class  DetailRecyclerview:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+                  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                      var view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail,parent,false)
+                      return  CustomviewHolder(view)  <<---  CustomviewHolder위에서 alt+Enter 키를 누르면 Create class 메뉴 선택후
+                      네번째 메뉴중 CustomviewHolder 선택 
           
-       '게시'버튼으로 게시함.
-                 
-    build Error 가 나타남.
-        Error Cod: can fit ~~~   ===>build.gradle 파일에  multiDexEnabled true 추가
-             defaultConfig {
-                    applicationId "com.e.howlssns"
-                    minSdkVersion 15
-                    targetSdkVersion 29
-                    
-    -- 전역변수 초기화의 중요성
-         //초기화  =================================
-                firestore = FirebaseFirestore.getInstance()
-        
-                storage = FirebaseStorage.getInstance()
-        
-                auth = FirebaseAuth.getInstance()
-        
-                //=========================================
-                
-                
-     결과값:
-          Firebase의 database메뉴에 올라감
-          
+              inner class CustomviewHolder(view: View?) : RecyclerView.ViewHolder() {
+              
+                      } 위 코드가 자동 생성
+                      
                          
      *** www.pixabay.com 에 무료 사진이 많음
      
+     
+     import androidx.recyclerview.widget.LinearLayoutManager
+     import androidx.recyclerview.widget.RecyclerView
+     
+     
+     import kotlinx.android.synthetic.main.fragment_detail.view.*
+     
+     private var View.layoutManager: LinearLayoutManager
+         get() {}
+         set() {}
+     private var View.adapter: DetailviewFragment.DetailRecyclerviewAdapter
+         get() {}
+         set() {}
+     
+     class DetailviewFragment :Fragment() {
+         override fun onCreateView(
+             inflater: LayoutInflater,
+             container: ViewGroup?,
+             savedInstanceState: Bundle?
+         ): View? {
+             var view = LayoutInflater.from(inflater.context).inflate(R.layout.fragment_detail, container, false)
+             
+             view.detailviewfragment_recyleview.adapter = DetailRecyclerviewAdapter()
+             view.detailviewfragment_recyleview.layoutManager = LinearLayoutManager(activity)
+             
+             return view
+             
+         }
+     
+         inner class DetailRecyclerviewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+     
+             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                 //var imageview = LayoutInflater.from(parent.context).inflate(R.layout.item_detail,parent,false)
+                 var imageview = ImageView(parent.context)
+                 return CustomviewHolder(imageview)
+             }
+     
+             inner class CustomviewHolder(imageView: ImageView?) : RecyclerView.ViewHolder(imageView) {
+     
+             }
+     
+             override fun getItemCount(): Int {
+                 return 3
+     
+             }
+     
+             override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+     
+             }
+         }
+     }
+     
+    3.Adapter 생성
+      CustomViewHolder(view) <<== 빨간줄이 나오면 alt+Enter 키를 누르고 create class 선택하면 다음줄이 자동 완성
+              }
+      
+              inner class CustomViewHolder(view: View?) : RecyclerView.ViewHolder() {
+      
+              }
+              
+              
+              
+              class CartActivity : BaseActivity() {
+                  internal var cartItemsList: MutableList<ItemObject> = ArrayList()
+              
+                  override fun onCreate(savedInstanceState: Bundle?) {
+                      super.onCreate(savedInstanceState)
+                      setContentView(R.layout.cart_master)
+              
+                      cartItemsList = DatabaseAdapter.cartItems
+                      cart_RecyclerView.setHasFixedSize(true)
+                      cart_RecyclerView.layoutManager = LinearLayoutManager(this)
+                      rvAdapter = ItemRecyclerViewAdapter(cartItemsList, this){item->
+                          supportActionBar?.setTitle("hi")
+                      }
+                      cart_RecyclerView.adapter = rvAdapter
+                  }
+              }
